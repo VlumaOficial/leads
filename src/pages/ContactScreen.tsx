@@ -10,11 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { showSuccess, showError } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client"; // Importar o cliente Supabase
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "E-mail inválido." }),
-  whatsapp: z.string().min(1, { message: "WhatsApp é obrigatório." }), // Alterado para obrigatório
+  whatsapp: z.string().min(1, { message: "WhatsApp é obrigatório." }),
   message: z.string().optional(),
 });
 
@@ -32,12 +33,59 @@ const ContactScreen = () => {
     },
   });
 
-  const onSubmit = (data: ContactFormValues) => {
-    console.log("Dados de contato enviados:", data);
-    // Here you would typically send the data to your backend
-    showSuccess("✨ Obrigado! Em breve entraremos em contato para entender seu momento e sugerir o melhor caminho para simplificar sua rotina.");
-    localStorage.removeItem("questionnaireAnswers"); // Clear answers after submission
-    navigate("/"); // Redirect to home or a thank you page
+  const onSubmit = async (data: ContactFormValues) => {
+    try {
+      // 1. Recuperar as respostas do questionário do localStorage
+      const savedAnswers = localStorage.getItem("questionnaireAnswers");
+      const questionnaireAnswers = savedAnswers ? JSON.parse(savedAnswers) : {};
+
+      // 2. Inserir as respostas do questionário no Supabase
+      const { data: respostasData, error: respostasError } = await supabase
+        .from("respostas_questionario")
+        .insert([
+          {
+            segmento: questionnaireAnswers.segment || [],
+            funcao_na_empresa: questionnaireAnswers["role-in-company"] || null,
+            objetivo_simplificar: questionnaireAnswers["simplify-goal"] || null,
+            situacao_atual: questionnaireAnswers["current-situation"] || null,
+            motivacao: questionnaireAnswers.motivation || [],
+            maturidade_digital: questionnaireAnswers["digital-maturity"] || null,
+          },
+        ])
+        .select();
+
+      if (respostasError) {
+        console.error("Erro ao salvar respostas do questionário:", respostasError);
+        showError("Erro ao salvar as respostas do questionário. Tente novamente.");
+        return;
+      }
+
+      const respostasId = respostasData[0].id;
+
+      // 3. Inserir os dados de contato no Supabase, vinculando às respostas
+      const { error: contatoError } = await supabase.from("contatos").insert([
+        {
+          nome: data.name,
+          email: data.email,
+          whatsapp: data.whatsapp,
+          mensagem: data.message,
+          respostas_id: respostasId,
+        },
+      ]);
+
+      if (contatoError) {
+        console.error("Erro ao salvar dados de contato:", contatoError);
+        showError("Erro ao salvar seus dados de contato. Tente novamente.");
+        return;
+      }
+
+      showSuccess("✨ Obrigado! Em breve entraremos em contato para entender seu momento e sugerir o melhor caminho para simplificar sua rotina.");
+      localStorage.removeItem("questionnaireAnswers"); // Limpar respostas após o envio
+      navigate("/"); // Redirecionar para a tela inicial
+    } catch (error) {
+      console.error("Erro inesperado ao enviar formulário:", error);
+      showError("Ocorreu um erro inesperado. Tente novamente.");
+    }
   };
 
   return (
@@ -92,7 +140,7 @@ const ContactScreen = () => {
             </Label>
             <Input
               id="whatsapp"
-              placeholder="📱 WhatsApp (obrigatório)" // Placeholder atualizado
+              placeholder="📱 WhatsApp (obrigatório)"
               {...form.register("whatsapp")}
               className="py-2"
             />
