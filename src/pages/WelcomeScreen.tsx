@@ -8,6 +8,8 @@ const WelcomeScreen = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
+    // Limpa as respostas do questionário do localStorage antes de iniciar um novo
+    localStorage.removeItem("questionnaireAnswers");
     navigate("/questionnaire/1");
   };
 
