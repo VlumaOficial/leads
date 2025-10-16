@@ -26,7 +26,7 @@ const questionnaireSteps: QuestionnaireStep[] = [
   {
     id: "segment",
     question: "Qual dessas opções melhor descreve seu segmento?",
-    type: "radio",
+    type: "checkbox", // Alterado para checkbox
     options: [
       { value: "clinicas-saude", label: "💼 Clínicas e Saúde" },
       { value: "beleza-bem-estar", label: "💆‍♀️ Beleza e Bem-Estar" },
@@ -49,6 +49,18 @@ const questionnaireSteps: QuestionnaireStep[] = [
       { value: "profissionais-liberais", label: "🧠 Profissionais Liberais" },
       { value: "agencias", label: "🏢 Agências" },
       { value: "outros", label: "✨ Outros" },
+    ],
+  },
+  {
+    id: "role-in-company", // Nova etapa adicionada
+    question: "Qual a sua função na empresa?",
+    type: "radio",
+    options: [
+      { value: "proprietario", label: "CEO / Proprietário(a)" },
+      { value: "gerente", label: "Gerente / Coordenador(a)" },
+      { value: "analista", label: "Analista / Especialista" },
+      { value: "autonomo", label: "Autônomo(a) / Freelancer" },
+      { value: "outro", label: "Outro" },
     ],
   },
   {

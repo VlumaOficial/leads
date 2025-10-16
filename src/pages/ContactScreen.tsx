@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const formSchema = z.object({
   name: z.string().min(2, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "E-mail inválido." }),
-  whatsapp: z.string().optional(),
+  whatsapp: z.string().min(1, { message: "WhatsApp é obrigatório." }), // Alterado para obrigatório
   message: z.string().optional(),
 });
 
@@ -88,14 +88,19 @@ const ContactScreen = () => {
           </div>
           <div>
             <Label htmlFor="whatsapp" className="sr-only">
-              WhatsApp (opcional)
+              WhatsApp
             </Label>
             <Input
               id="whatsapp"
-              placeholder="📱 WhatsApp (opcional)"
+              placeholder="📱 WhatsApp (obrigatório)" // Placeholder atualizado
               {...form.register("whatsapp")}
               className="py-2"
             />
+            {form.formState.errors.whatsapp && (
+              <p className="text-red-500 text-sm mt-1 text-left">
+                {form.formState.errors.whatsapp.message}
+              </p>
+            )}
           </div>
           <div>
             <Label htmlFor="message" className="sr-only">
