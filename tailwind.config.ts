@@ -19,6 +19,20 @@ export default {
     },
     extend: {
       colors: {
+        // VLUMA Brand Colors
+        'purple-vivid': '#8B5CF6',
+        'blue-vivid': '#3B82F6',
+        'cyan-vivid': '#06B6D4',
+        'pink-vivid': '#EC4899',
+        'verde-inteligente': '#10B981',
+        'laranja-cta': '#EA580C',
+        'fundo-escuro': '#000000',
+        'card-dark': '#0A0A0A',
+        'branco-puro': '#FFFFFF',
+        'branco-suave': '#F8FAFC',
+        'cinza-claro': '#94A3B8',
+        
+        // Shadcn defaults (mantidos para compatibilidade)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -62,6 +76,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        sans: [
+          'Inter',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji',
+          'sans-serif'
+        ],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Emojis</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+            padding: 40px;
+            background: #000;
+            color: #fff;
+        }
+        .test-item {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        .emoji-large {
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Renderização de Emojis</h1>
+    
+    <div class="test-item">
+        <h2>Teste 1: Emojis Básicos</h2>
+        <p class="emoji-large">💼 📊 ⚖️ 💆‍♀️ 🏠 🎓</p>
+    </div>
+    
+    <div class="test-item">
+        <h2>Teste 2: Emojis do Questionário</h2>
+        <p>💼 Clínicas e Saúde</p>
+        <p>💆‍♀️ Beleza e Bem-Estar</p>
+        <p>⚖️ Advocacia</p>
+        <p>📊 Contabilidade</p>
+        <p>🧩 Consultorias</p>
+        <p>🏠 Corretores</p>
+    </div>
+    
+    <div class="test-item">
+        <h2>Teste 3: Emojis com Texto</h2>
+        <p>✨ Soluções que simplificam</p>
+        <p>🔒 Seus dados estão seguros</p>
+        <p>🚀 Empreendedores</p>
+        <p>💡 Inovar</p>
+    </div>
+    
+    <div class="test-item">
+        <h2>Informações do Sistema</h2>
+        <p><strong>User Agent:</strong> <span id="userAgent"></span></p>
+        <p><strong>Plataforma:</strong> <span id="platform"></span></p>
+        <p><strong>Fonte Computada:</strong> <span id="computedFont"></span></p>
+    </div>
+    
+    <script>
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+        document.getElementById('platform').textContent = navigator.platform;
+        
+        // Pega a fonte computada
+        const testElement = document.querySelector('.emoji-large');
+        const computedStyle = window.getComputedStyle(testElement);
+        document.getElementById('computedFont').textContent = computedStyle.fontFamily;
+    </script>
+</body>
+</html>

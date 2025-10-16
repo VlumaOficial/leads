@@ -98,4 +98,20 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Força renderização de emojis nativos - IMPORTANTE */
+  html, body, * {
+    font-family: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Override específico para componentes Radix UI */
+  [role="radio"] + label,
+  [type="checkbox"] + label,
+  label[for],
+  .radix-label {
+    font-family: 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif !important;
+  }
 }
