@@ -12,11 +12,29 @@ import { showSuccess, showError } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client"; // Importar o cliente Supabase
 
+// Função para formatar o número de telefone
+const formatPhoneNumber = (value: string) => {
+  if (!value) return value;
+  const phoneNumber = value.replace(/\D/g, ''); // Remove tudo que não é dígito
+  let formattedNumber = '';
+
+  if (phoneNumber.length > 0) {
+    formattedNumber += `(${phoneNumber.substring(0, 2)}`;
+  }
+  if (phoneNumber.length > 2) {
+    formattedNumber += `) ${phoneNumber.substring(2, 7)}`;
+  }
+  if (phoneNumber.length > 7) {
+    formattedNumber += `-${phoneNumber.substring(7, 11)}`;
+  }
+  return formattedNumber;
+};
+
 const formSchema = z.object({
   name: z.string().min(2, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "E-mail inválido." }),
-  whatsapp: z.string().min(1, { message: "WhatsApp é obrigatório." }),
-  message: z.string().optional(),
+  whatsapp: z.string().min(10, { message: "WhatsApp é obrigatório e deve ter pelo menos 10 dígitos." }).max(15, { message: "WhatsApp inválido." }), // Ajustado para validar o formato
+  message: z.string().min(1, { message: "Mensagem é obrigatória." }), // Alterado para obrigatório
 });
 
 type ContactFormValues = z.infer<typeof formSchema>;
@@ -67,7 +85,7 @@ const ContactScreen = () => {
         {
           nome: data.name,
           email: data.email,
-          whatsapp: data.whatsapp,
+          whatsapp: data.whatsapp.replace(/\D/g, ''), // Salva apenas os dígitos do WhatsApp
           mensagem: data.message,
           respostas_id: respostasId,
         },
@@ -142,6 +160,11 @@ const ContactScreen = () => {
               id="whatsapp"
               placeholder="📱 WhatsApp (obrigatório)"
               {...form.register("whatsapp")}
+              value={formatPhoneNumber(form.watch("whatsapp"))} // Aplica a formatação
+              onChange={(e) => {
+                const formatted = formatPhoneNumber(e.target.value);
+                form.setValue("whatsapp", formatted, { shouldValidate: true });
+              }}
               className="py-2"
             />
             {form.formState.errors.whatsapp && (
@@ -156,11 +179,16 @@ const ContactScreen = () => {
             </Label>
             <Textarea
               id="message"
-              placeholder="🗣️ Quer contar um pouco mais sobre o que busca? (opcional)"
+              placeholder="🗣️ Quer contar um pouco mais sobre o que busca? (obrigatório)"
               {...form.register("message")}
               rows={4}
               className="py-2"
             />
+            {form.formState.errors.message && (
+              <p className="text-red-500 text-sm mt-1 text-left">
+                {form.formState.errors.message.message}
+              </p>
+            )}
           </div>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
