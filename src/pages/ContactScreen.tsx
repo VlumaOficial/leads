@@ -34,7 +34,7 @@ const formSchema = z.object({
   name: z.string().min(2, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "E-mail inválido." }),
   whatsapp: z.string().min(10, { message: "WhatsApp é obrigatório e deve ter pelo menos 10 dígitos." }).max(15, { message: "WhatsApp inválido." }), // Ajustado para validar o formato
-  message: z.string().min(1, { message: "Mensagem é obrigatória." }), // Alterado para obrigatório
+  message: z.string().optional().transform(e => e === "" ? null : e), // Tornando opcional e transformando string vazia em null
 });
 
 type ContactFormValues = z.infer<typeof formSchema>;
@@ -179,7 +179,7 @@ const ContactScreen = () => {
             </Label>
             <Textarea
               id="message"
-              placeholder="🗣️ Quer contar um pouco mais sobre o que busca? (obrigatório)"
+              placeholder="🗣️ Quer contar um pouco mais sobre o que busca? (opcional)"
               {...form.register("message")}
               rows={4}
               className="py-2"
