@@ -9,8 +9,24 @@ import WelcomeScreen from "@/pages/WelcomeScreen";
 import QuestionnaireScreen from "@/pages/QuestionnaireScreen";
 import ContactScreen from "@/pages/ContactScreen";
 import SuccessScreen from "@/pages/SuccessScreen";
+import { usePageTracking } from "@/hooks/useAnalytics";
 
 const queryClient = new QueryClient();
+
+const AppContent = () => {
+  usePageTracking(); // Rastreia mudanças de página
+  
+  return (
+    <Routes>
+      <Route path="/" element={<WelcomeScreen />} /> {/* Initial screen - direto para Welcome */}
+      <Route path="/questionnaire/:step" element={<QuestionnaireScreen />} />
+      <Route path="/contact" element={<ContactScreen />} />
+      <Route path="/success" element={<SuccessScreen />} />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -18,14 +34,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<WelcomeScreen />} /> {/* Initial screen - direto para Welcome */}
-          <Route path="/questionnaire/:step" element={<QuestionnaireScreen />} />
-          <Route path="/contact" element={<ContactScreen />} />
-          <Route path="/success" element={<SuccessScreen />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
