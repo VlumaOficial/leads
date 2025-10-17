@@ -53,6 +53,11 @@ const ContactScreen = () => {
   const handlePrivacyAccept = () => {
     setAgreedToPrivacy(true);
   };
+
+  const handlePrivacyModalClose = (open: boolean) => {
+    setPrivacyModalOpen(open);
+    // Não resetar se já foi aceito - apenas quando modal é fechado sem aceitar
+  };
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -354,8 +359,8 @@ const ContactScreen = () => {
                 <Checkbox
                   id="privacy-consent"
                   checked={agreedToPrivacy}
-                  onCheckedChange={(checked) => setAgreedToPrivacy(!!checked)}
-                  className="mt-0.5 border-purple-vivid/50 data-[state=checked]:bg-purple-vivid data-[state=checked]:border-purple-vivid"
+                  disabled={true}
+                  className="mt-0.5 border-purple-vivid/50 data-[state=checked]:bg-purple-vivid data-[state=checked]:border-purple-vivid cursor-not-allowed"
                 />
                 <label
                   htmlFor="privacy-consent"
@@ -369,6 +374,11 @@ const ContactScreen = () => {
                   >
                     Política de Privacidade e Uso de Dados
                   </button>
+                  {!agreedToPrivacy && (
+                    <span className="block text-xs text-yellow-500 mt-1">
+                      ⚠ Para continuar, é necessário ler e aceitar a Política de Privacidade
+                    </span>
+                  )}
                 </label>
               </div>
             </div>
@@ -404,7 +414,7 @@ const ContactScreen = () => {
       {/* Modal de Política de Privacidade */}
       <PrivacyConsent
         open={privacyModalOpen}
-        onOpenChange={setPrivacyModalOpen}
+        onOpenChange={handlePrivacyModalClose}
         onAccept={handlePrivacyAccept}
       />
     </div>
