@@ -149,7 +149,7 @@ const questionnaireSteps: QuestionnaireStep[] = [
   },
   {
     id: "digital-maturity",
-    question: "Hoje, você já usa alguma ferramenta digital no seu dia a dia?",
+    question: "Hoje, você já usa alguma solução digital no seu dia a dia?",
     type: "radio",
     options: [
       { value: "sim-varias", label: "Sim, uso várias (sou digital)", icon: CheckCircle2 },
