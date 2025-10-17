@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { User, Mail, Phone, MessageSquare, Send, Shield, Handshake } from "lucide-react";
 import Logo from "@/components/Logo";
+import PrivacyConsent from "@/pages/PrivacyConsent";
 
 // Função para formatar o número de telefone
 const formatPhoneNumber = (value: string) => {
@@ -47,6 +48,11 @@ const ContactScreen = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [agreedToPrivacy, setAgreedToPrivacy] = React.useState(false);
+  const [privacyModalOpen, setPrivacyModalOpen] = React.useState(false);
+
+  const handlePrivacyAccept = () => {
+    setAgreedToPrivacy(true);
+  };
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -353,17 +359,16 @@ const ContactScreen = () => {
                 />
                 <label
                   htmlFor="privacy-consent"
-                  className="text-sm text-branco-suave cursor-pointer leading-relaxed"
+                  className="text-sm text-branco-suave leading-relaxed"
                 >
                   Li e concordo com a{" "}
-                  <a
-                    href="https://coreait.com.br/politica"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-cyan-vivid hover:text-cyan-vivid/80 underline font-semibold transition-colors"
+                  <button
+                    type="button"
+                    onClick={() => setPrivacyModalOpen(true)}
+                    className="text-cyan-vivid hover:text-cyan-vivid/80 underline font-semibold transition-colors cursor-pointer"
                   >
                     Política de Privacidade e Uso de Dados
-                  </a>
+                  </button>
                 </label>
               </div>
             </div>
@@ -395,6 +400,13 @@ const ContactScreen = () => {
         </form>
       </div>
       </motion.div>
+
+      {/* Modal de Política de Privacidade */}
+      <PrivacyConsent
+        open={privacyModalOpen}
+        onOpenChange={setPrivacyModalOpen}
+        onAccept={handlePrivacyAccept}
+      />
     </div>
   );
 };

@@ -27,10 +27,10 @@ const SuccessScreen = () => {
   }, []);
 
   const handleVoltar = () => {
-    // Limpa dados e volta para o início
+    // Limpa dados e redireciona para o site da Vluma
     localStorage.removeItem("leadSuccess");
     localStorage.removeItem("questionnaireAnswers");
-    navigate("/");
+    window.location.href = "https://www.vluma.com.br";
   };
 
   const getMensagemPorStatus = () => {
@@ -47,7 +47,7 @@ const SuccessScreen = () => {
       });
 
       return {
-        titulo: `${nome ? nome.split(' ')[0] : 'Olá'}, você já tem um agendamento! 📅`,
+        titulo: `${nome ? nome.split(' ')[0] : 'Olá'}, você já tem um agendamento!`,
         mensagem: `Identificamos que você já possui uma reunião agendada para ${dataFormatada}.`,
         submensagem: "Em caso de dúvidas, entre em contato conosco.",
         icone: Calendar,
@@ -57,7 +57,7 @@ const SuccessScreen = () => {
 
     if (status === 'realizado') {
       return {
-        titulo: `${nome ? nome.split(' ')[0] : 'Olá'}, já realizamos sua apresentação! ✨`,
+        titulo: `${nome ? nome.split(' ')[0] : 'Olá'}, já realizamos sua apresentação!`,
         mensagem: "Identificamos que você já participou de uma apresentação conosco anteriormente.",
         submensagem: "Em caso de dúvidas ou para agendar uma nova conversa, entre em contato.",
         icone: CheckCircle2,
@@ -67,7 +67,7 @@ const SuccessScreen = () => {
 
     // Status 'pendente' ou novo cadastro
     return {
-      titulo: `${nome ? nome.split(' ')[0] : 'Obrigado'}, recebemos suas informações! 🎉`,
+      titulo: `${nome ? nome.split(' ')[0] : 'Obrigado'}, recebemos suas informações!`,
       mensagem: "Em breve, um especialista da VLUMA entrará em contato para entender melhor o seu momento e apresentar as melhores soluções.",
       submensagem: "Fique atento ao seu WhatsApp e e-mail!",
       icone: CheckCircle2,
