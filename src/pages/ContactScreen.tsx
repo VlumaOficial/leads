@@ -391,15 +391,6 @@ const ContactScreen = () => {
               )}
             </Button>
 
-            {!agreedToPrivacy && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-xs text-cinza-claro text-center mt-3"
-              >
-                🔒 Marque a caixa acima para habilitar o envio
-              </motion.p>
-            )}
           </motion.div>
         </form>
       </div>
